@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download Video TikTok</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .input-container {
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .result-container {
+      display: none;
+      margin-top: 20px;
+      text-align: center;
+    }
+    .result-container a {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+    .result-container a:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Download Video TikTok</h1>
+  <div class="container">
+    <div class="input-container">
+      <label for="tiktok-url">Masukkan URL Video TikTok:</label>
+      <input type="text" id="tiktok-url" placeholder="Contoh: https://www.tiktok.com/@username/video/1234567890123456789">
+    </div>
+    <button onclick="downloadVideo()">Download Video</button>
+    
+    <div class="result-container" id="result-container">
+      <p>Video siap untuk diunduh!</p>
+      <a id="download-link" href="#" download>Unduh Video</a>
+    </div>
+  </div>
+
+  <script>
+    async function downloadVideo() {
+      const url = document.getElementById('tiktok-url').value;
+      if (!url) {
+        alert('URL tidak boleh kosong');
+        return;
+      }
+
+      try {
+        const response = await axios.get('https://tiklok-down.vercel.app/api/download', {
+          params: { url: url },
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Android 10; Mobile; rv:128.0) Gecko/128.0 Firefox/128.0',
+            'Referer': 'https://tiklok-down.vercel.app/'
+          }
+        });
+
+        const videoUrl = response.data?.downloadUrl; // Misal API mengembalikan videoUrl untuk diunduh
+        if (videoUrl) {
+          document.getElementById('result-container').style.display = 'block';
+          document.getElementById('download-link').href = videoUrl;
+        } else {
+          alert('Video tidak ditemukan atau tidak dapat diunduh');
+        }
+      } catch (error) {
+        console.error('Error fetching video:', error);
+        alert('Terjadi kesalahan, coba lagi nanti.');
+      }
+    }
+  </script>
+
+</body>
+</html>
+
